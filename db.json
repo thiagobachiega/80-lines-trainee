@@ -1,0 +1,18 @@
+{
+  "brand":[
+    {
+      "name": "Volkswagen"
+    },
+    {
+      "name": "Ford"
+    }
+  ],
+  "car":[
+    {
+      "name": "Jetta",
+      "plate": "ABC-1578",
+      "color": "Preto",
+      "brand": "Volkswagen"
+    }
+  ]
+}

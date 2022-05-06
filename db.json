@@ -13,6 +13,12 @@
       "plate": "ABC-1578",
       "color": "Preto",
       "brand": "Volkswagen"
+    },
+    {
+      "name": "Fusion",
+      "plate": "ABC-7894",
+      "color": "Prata",
+      "brand": "Ford"
     }
   ]
 }

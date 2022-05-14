@@ -1,24 +1,45 @@
 {
-  "brand":[
+  "brand": [
     {
+      "name": "Teslaa",
+      "id": 1
+    },
+    {
+      "id": "2",
+      "name": "Ford"
+    },
+    {
+      "id": "3",
       "name": "Volkswagen"
     },
     {
-      "name": "Ford"
+      "id": "5",
+      "name": "Fiat"
     }
   ],
-  "car":[
+  "car": [
     {
-      "name": "Jetta",
-      "plate": "ABC-1578",
-      "color": "Preto",
-      "brand": "Volkswagen"
+      "plate": "qaz-6969",
+      "brand": "Ford",
+      "color": "azul",
+      "id": 3
     },
     {
-      "name": "Fusion",
-      "plate": "ABC-7894",
-      "color": "Prata",
-      "brand": "Ford"
+      "plate": "qaz-6969",
+      "brand": "Ford",
+      "color": "azul",
+      "id": 4
+    },
+    {
+      "plate": "qaz-153",
+      "color": "preto",
+      "id": 5
+    },
+    {
+      "plate": "bac-7889",
+      "brand": "Ford",
+      "color": "azul",
+      "id": 6
     }
   ]
 }

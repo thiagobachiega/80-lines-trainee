@@ -1,25 +1,13 @@
 import Container from "./container";
 import Link from 'next/link'
 import { useQuery, useMutation } from "react-query";
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-export default function EditMarcaForm ({id}) {
+export default function EditMarcaForm (id) {
 
   const [brand, setBrand] = useState()
-
-const addBrand = async (brand) => {
-    const response = await fetch("http://localhost:5000/brand", {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(brand),
-    })
-    return response.json()
-  }
-
- const { mutateAsync, status } = useMutation(addBrand)
-  const add = async () => {
-    await mutateAsync(brand)
-  }
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
 
   function handleOnChange (e) {
     console.log(brand)
@@ -30,13 +18,13 @@ const addBrand = async (brand) => {
 }
 
 const fetchBrand = async () => {
-  const response = await fetch(`http://localhost:5000/brand/${id}`)
+  const response = await fetch(`http://localhost:5000/brand/${id.id}`)
   return response.json()
 }
-const { data, status: carStatus } = useQuery("brand" + id.id, fetchBrand)
+const { data, status: brandStatus } = useQuery("brand" + id.id, fetchBrand)
 
 const editBrand = async (brand) => {
-  const response = await fetch(`http://localhost:5000/brand/${id}`, {
+  const response = await fetch(`http://localhost:5000/brand/${id.id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(brand),
@@ -44,15 +32,47 @@ const editBrand = async (brand) => {
   return response.json()
 }
 
-const { mutateAsync: editMutate, status: statusMutate } = useMutation(editBrand)
+const { mutateAsync } = useMutation(editBrand, {
+  onSuccess: () => {setSuccess(true)}
+})
 
 const edit = async () => {
-  await editMutate(brand)
+  if (!brand.id?.length) {
+    setError('O campo ID é obrigatório')
+    return 
+  }
+  if (!brand.name?.length) {
+    setError('O campo marca é obrigatório')
+    return 
+  } 
+  await mutateAsync(brand)
+}
+
+useEffect(() => {
+  if (success) {
+    setTimeout(() => {
+      setSuccess(false)
+    }, 3000);
+  }
+  if (error.length) {
+    setTimeout(() => {
+      setError('')
+    }, 3000);
+  }
+}, [success, error])
+
+if (brandStatus === "loading") {
+  return <div>Loading...</div>
+}
+
+if (brandStatus === "error") {
+  return <div>Error</div>
 }
 
 return(
   <Container>
-    {statusMutate === 'success' && <div className="self-center bg-green-500 py-4 px-8 text-white font-semibold rounded">Marca editada com sucesso!</div>}
+    {success && <div className="self-center bg-green-500 py-4 px-8 text-white font-semibold rounded">Marca editada com sucesso!</div>}
+    {error.length  > 0 && <div className="self-center bg-red-500 py-4 px-8 text-white font-semibold rounded">{error}</div>}
     <h1 className="text-3xl">Editar Marca</h1>
     {data && (
       <form className="flex flex-col mt-5 w-1/6" onSubmit={(e) => e.preventDefault()}>

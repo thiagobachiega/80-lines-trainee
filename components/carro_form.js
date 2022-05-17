@@ -38,12 +38,12 @@ export function NovoCarro () {
       setError('Informe uma placa valida')
       return 
     }  
-    if (!car.color?.length) {
-      setError('O campo cor é obrigatório')
-      return 
-    } 
     if (!car.brand?.length) {
       setError('O campo marca é obrigatório')
+      return 
+    } 
+    if (!car.color?.length) {
+      setError('O campo cor é obrigatório')
       return 
     } 
     await mutateAsync(car)

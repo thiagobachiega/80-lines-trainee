@@ -1,11 +1,13 @@
 import Container from "./container";
 import Link from 'next/link'
-import { useQuery, useMutation } from "react-query";
-import { useState } from 'react'
+import { useMutation } from "react-query";
+import { useState, useEffect } from 'react'
 
-export default function MarcaForm ({id}) {
+export default function MarcaForm () {
 
-  const [brand, setBrand] = useState()
+  const [brand, setBrand] = useState('')
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
 
 const addBrand = async (car) => {
     const response = await fetch("http://localhost:5000/brand", {
@@ -16,11 +18,6 @@ const addBrand = async (car) => {
     return response.json()
   }
 
- const { mutateAsync, status } = useMutation(addBrand)
-  const add = async () => {
-    await mutateAsync(brand)
-  }
-
   function handleOnChange (e) {
     console.log(brand)
     setBrand({
@@ -29,9 +26,41 @@ const addBrand = async (car) => {
     })
 }
 
+ const { mutateAsync } = useMutation(addBrand, {
+  onSuccess: () => {setSuccess(true)}
+})
+
+  const add = async () => {
+    if (!brand.id?.length) {
+      setError('O campo ID é obrigatório')
+      return 
+    }
+    if (!brand.name?.length) {
+      setError('O campo marca é obrigatório')
+      return 
+    } 
+    await mutateAsync(brand)
+  }
+
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        setSuccess(false)
+      }, 3000);
+    }
+    if (error.length) {
+      setTimeout(() => {
+        setError('')
+      }, 3000);
+    }
+  }, [success, error])
+
+
+
 return(
   <Container>
-    {status === 'success' && <div className="self-center bg-green-500 py-4 px-8 text-white font-semibold rounded">Marca adicionada com sucesso!</div>}
+    {success && <div className="self-center bg-green-500 py-4 px-8 text-white font-semibold rounded">Marca adicionada com sucesso!</div>}
+    {error.length  > 0 && <div className="self-center bg-red-500 py-4 px-8 text-white font-semibold rounded">{error}</div>}
     <h1 className="text-3xl">Nova Marca</h1>
     <form className="flex flex-col mt-5 w-1/6" onSubmit={(e) => e.preventDefault()}>
       <label htmlFor="id">ID</label>

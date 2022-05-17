@@ -25,7 +25,7 @@ function Brands () {
  
    const remove = async (id) => {
      await mutateAsync(id)
-     queryClient.invalidateQueries("cars")
+     queryClient.invalidateQueries("brand")
    }
 
   const fetchBrand = async () => {

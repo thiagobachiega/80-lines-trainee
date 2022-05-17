@@ -33,7 +33,7 @@ const fetchBrand = async () => {
   const response = await fetch(`http://localhost:5000/brand/${id}`)
   return response.json()
 }
-const { data, status: carStatus } = useQuery("brand", fetchBrand)
+const { data, status: carStatus } = useQuery("brand" + id.id, fetchBrand)
 
 const editBrand = async (brand) => {
   const response = await fetch(`http://localhost:5000/brand/${id}`, {
@@ -50,13 +50,10 @@ const edit = async () => {
   await editMutate(brand)
 }
 
-console.log(id)
-console.log(data)
-
 return(
   <Container>
     {statusMutate === 'success' && <div className="self-center bg-green-500 py-4 px-8 text-white font-semibold rounded">Marca editada com sucesso!</div>}
-    <h1 className="text-3xl">Nova Marca</h1>
+    <h1 className="text-3xl">Editar Marca</h1>
     {data && (
       <form className="flex flex-col mt-5 w-1/6" onSubmit={(e) => e.preventDefault()}>
       <label htmlFor="id">ID</label>

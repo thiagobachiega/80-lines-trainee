@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { QueryClient, QueryClientProvider, useQuery, useMutation } from "react-query";
 import { BsTrash, BsPencil } from "react-icons/bs";
 import { useState } from 'react'
+import Modal from "../components/modal_delete";
 
 const queryClient = new QueryClient()
 
@@ -38,21 +39,40 @@ function CarTable() {
     queryClient.invalidateQueries("cars")
   }
 
-  const { data: car, status: carStatus } = useQuery("cars", fetchCar)
+  const modalConfirm = (confirm) => {
+    if (confirm && removingCarId.length) {
+      remove(removingCarId)
+      setRemovingCarId('')
+    } else {
+      setRemovingCarId('')
+    }
+  }
+
+  const [removingCarId, setRemovingCarId] = useState('')
+
+  const { data: cars, status: carStatus } = useQuery("cars", fetchCar)
   const { data: carBrand, status: brandStatus } = useQuery("brand", fetchBrand)
 
-  const [ busca, setBusca ] = useState()
+  const [ busca, setBusca ] = useState('')
 
-  const handleBusca = (e, car) => {
+  const [ buscaBrand, setBuscaBrand ] = useState('')
+
+  const handleBusca = (e) => {
     setBusca(e.target.value)
-    const carroFiltrado = car.plate.filter((plate) => plate.startWith(busca))
-    return carroFiltrado
+  }
+
+  const handleBuscaBrand = (e) => {
+    setBuscaBrand(e.target.value)
   }
 
   if (carStatus, brandStatus === "loading") {
     return <div>Loading...</div>
   }
- 
+
+  const filteredCar = cars.filter((car) => {
+    return car.plate.toUpperCase().includes(busca.toUpperCase()) && car.brand.toUpperCase().includes(buscaBrand.toUpperCase())
+  })
+
   if (carStatus, brandStatus === "error") {
     return <div>Error</div>
   }
@@ -71,7 +91,8 @@ return(
   </div>
   <div className="flex flex-col">
     <label htmlFor="pesquisaMarca">Filtrar por marca</label>
-    <select className="border-2 rounded-md" id="pesquisaMarca">
+    <select className="border-2 rounded-md" id="pesquisaMarca" onChange={handleBuscaBrand}>
+      <option value=''>Selecione uma marca</option>
       {carBrand.map((car) => (
         <option>{car.name}</option>
       ))}
@@ -88,7 +109,7 @@ return(
         <td className="border-r-2 border-black bg-black text-white w-56">Ações</td>
       </tr>
     </thead>
-    {car.map((car) => (
+    {filteredCar.map((car) => (
     <tbody>
       <tr>
         <td className="border-r-2 border-black">{car.plate}</td>
@@ -101,7 +122,7 @@ return(
           <p className="mr-2">Editar</p>
         </div>
         </Link>
-        <div className="flex items-center border-black border-2 hover:text-red-500 hover:cursor-pointer" onClick={() => remove(car.id)}>
+        <div className="flex items-center border-black border-2 hover:text-red-500 hover:cursor-pointer" onClick={() => setRemovingCarId(car.id.toString())}>
           <BsTrash className="hover:text-red-500 hover:cursor-pointer mx-2"/>
           <p className="mr-2">Excluir</p>
         </div>
@@ -110,6 +131,7 @@ return(
     </tbody>
     ))}
   </table>
+  {removingCarId.length > 0 && <Modal modalConfirm={modalConfirm}/>}
 </Container>
 )
 }

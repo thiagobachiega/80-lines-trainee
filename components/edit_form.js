@@ -40,7 +40,7 @@ export function EditarCarro (id) {
     })
 }
 
-  const { data, status } = useQuery("car", fetchCar)
+  const { data } = useQuery("car" + id.id, fetchCar)
 
   const { data: carBrand, status: brandStatus } = useQuery("brand", fetchBrand)
 
@@ -53,10 +53,10 @@ export function EditarCarro (id) {
   }
 
   return(
-    <Container>
+    <Container key={id}>
       {statusMutate === 'success' && <div className="self-center bg-green-500 py-4 px-8 text-white font-semibold rounded">Carro editado com sucesso!</div>}
       {data && (<>
-        <h1 className="text-3xl">Novo Carro</h1>
+        <h1 className="text-3xl">Editar Carro</h1>
       <form className="flex flex-col mt-5 w-1/6" onSubmit={(e) => e.preventDefault()}>
         <label htmlFor="placa">Placa</label>
         <input defaultValue={data.plate} className="border-2 rounded-md border-black" id="plate" name="plate" onChange={handleOnChange}></input>

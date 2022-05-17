@@ -1,10 +1,6 @@
 {
   "brand": [
     {
-      "name": "Teslaa",
-      "id": 1
-    },
-    {
       "id": "2",
       "name": "Ford"
     },
@@ -13,32 +9,37 @@
       "name": "Volkswagen"
     },
     {
-      "id": "5",
-      "name": "Fiat"
+      "name": "Volvo",
+      "id": "7"
+    },
+    {
+      "id": "1",
+      "name": "Tesla"
     }
   ],
   "car": [
     {
-      "plate": "qaz-6969",
-      "brand": "Ford",
-      "color": "azul",
+      "plate": "qaz-6975",
+      "brand": "Volkswagen",
+      "color": "Preto",
       "id": 3
     },
     {
-      "plate": "qaz-6969",
-      "brand": "Ford",
-      "color": "azul",
+      "plate": "qaz-6975",
+      "brand": "Tesla",
+      "color": "Azul",
       "id": 4
     },
     {
-      "plate": "qaz-153",
-      "color": "preto",
+      "plate": "aas-4848",
+      "brand": "Ford",
+      "color": "azul",
       "id": 5
     },
     {
-      "plate": "bac-7889",
-      "brand": "Ford",
-      "color": "azul",
+      "plate": "ADX-4E64",
+      "brand": "Volvo",
+      "color": "Azul",
       "id": 6
     }
   ]

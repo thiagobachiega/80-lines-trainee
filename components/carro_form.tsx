@@ -1,13 +1,14 @@
 import Container from "./container";
 import { useQuery, useMutation } from "react-query";
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import ReactInputMask from "react-input-mask";
 import { useEffect } from "react";
+import Cars from "../types/cars";
 
-export function NovoCarro () {
+const NovoCarro:React.FC = () => {
 
-  const [car, setCar] = useState({})
+  const [car, setCar] = useState<Cars>()
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
@@ -16,7 +17,7 @@ export function NovoCarro () {
     return response.json()
   }
 
-  const addCar = async (car) => {
+  const addCar = async (car: Cars) => {
     const response = await fetch("http://localhost:5000/car", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -49,7 +50,7 @@ export function NovoCarro () {
     await mutateAsync(car)
   }
 
-  function handleOnChange (e) {
+  function handleOnChange (e:React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) {
     console.log(car)
     setCar({
       ...car,
@@ -106,3 +107,5 @@ export function NovoCarro () {
     </Container>
   )
 }
+
+export default NovoCarro

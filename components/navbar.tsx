@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-const Navbar = () => {
+const Navbar:React.FC = () => {
   return(
     <div className='bg-black flex w-screen h-10 items-center'>
       <ul className='flex p-4 text-white text-lg'>

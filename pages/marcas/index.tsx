@@ -2,10 +2,11 @@ import Container from "../../components/container";
 import Link from 'next/link'
 import { useQuery, useMutation, QueryClientProvider, QueryClient } from "react-query";
 import { BsTrash, BsPencil } from "react-icons/bs";
+import Brands from "../../types/brands";
 
 const queryClient = new QueryClient()
 
-export default function Marcas () {
+const Marcas:React.FC = () => {
   return(
     <QueryClientProvider client={queryClient}>
       <Brands></Brands>
@@ -13,9 +14,11 @@ export default function Marcas () {
   )
 }
 
+export default Marcas
+
 function Brands () {
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id:string) => {
     const response = await fetch(`http://localhost:5000/brand/${id}`,{
        method: 'DELETE',
      })
@@ -23,7 +26,7 @@ function Brands () {
    
    const { mutateAsync, status: delStatus } = useMutation(handleDelete)
  
-   const remove = async (id) => {
+   const remove = async (id:string) => {
      await mutateAsync(id)
      queryClient.invalidateQueries("brand")
    }
@@ -56,7 +59,7 @@ function Brands () {
             <td className="border-r-2 border-black bg-black text-white w-56">Ações</td>
           </tr>
         </thead>
-        {carBrand.map((car) => (
+        {carBrand.map((car: Brands) => (
           <tbody>
             <tr>
               <td className="border-r-2 border-black">{car.name}</td>

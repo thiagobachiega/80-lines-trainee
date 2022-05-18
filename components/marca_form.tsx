@@ -2,14 +2,16 @@ import Container from "./container";
 import Link from 'next/link'
 import { useMutation } from "react-query";
 import { useState, useEffect } from 'react'
+import Brands from "../types/brands";
+import React from 'react'
 
-export default function MarcaForm () {
+const MarcaForm:React.FC = () => {
 
-  const [brand, setBrand] = useState('')
+  const [brand, setBrand] = useState<Brands>()
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
-const addBrand = async (car) => {
+const addBrand = async (car: Brands) => {
     const response = await fetch("http://localhost:5000/brand", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -18,8 +20,7 @@ const addBrand = async (car) => {
     return response.json()
   }
 
-  function handleOnChange (e) {
-    console.log(brand)
+  function handleOnChange (e: React.ChangeEvent<HTMLInputElement>) {
     setBrand({
       ...brand,
       [e.target.name]: e.target.value
@@ -75,3 +76,5 @@ return(
   </Container>
 )
 }
+
+export default MarcaForm

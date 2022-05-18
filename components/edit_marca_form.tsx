@@ -2,17 +2,22 @@ import Container from "./container";
 import Link from 'next/link'
 import { useQuery, useMutation } from "react-query";
 import { useState, useEffect } from 'react'
+import Brands from "../types/brands";
 
-export default function EditMarcaForm (id) {
+interface EditMarcaFormProps {
+  id: string | string[]
+}
 
-  const [brand, setBrand] = useState()
+const EditMarcaForm:React.FC<EditMarcaFormProps> = (id) => {
+
+  const [brand, setBrand] = useState<Brands>()
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
-  function handleOnChange (e) {
+  function handleOnChange (e: React.ChangeEvent<HTMLInputElement>) {
     console.log(brand)
     setBrand({
-      ...brand,
+      ...brand, 
       [e.target.name]: e.target.value
     })
 }
@@ -89,3 +94,5 @@ return(
   </Container>
 )
 }
+
+export default EditMarcaForm

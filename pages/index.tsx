@@ -2,18 +2,23 @@ import Container from "../components/container";
 import Link from 'next/link';
 import { QueryClient, QueryClientProvider, useQuery, useMutation } from "react-query";
 import { BsTrash, BsPencil } from "react-icons/bs";
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Modal from "../components/modal_delete";
+import Cars from "../types/cars";
+import Brands from "../types/brands";
 
 const queryClient = new QueryClient()
 
-export default function Home() {
+
+const Home: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <CarTable/>
     </QueryClientProvider>
   )
 }
+
+export default Home
 
 function CarTable() {
   const fetchCar = async () => {
@@ -26,7 +31,7 @@ function CarTable() {
     return response.json()
   }
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
    const response = await fetch(`http://localhost:5000/car/${id}`,{
       method: 'DELETE',
     })
@@ -34,12 +39,12 @@ function CarTable() {
   
   const { mutateAsync, status: delStatus } = useMutation(handleDelete)
 
-  const remove = async (id) => {
+  const remove = async (id: string) => {
     await mutateAsync(id)
     queryClient.invalidateQueries("cars")
   }
 
-  const modalConfirm = (confirm) => {
+  const modalConfirm = (confirm: boolean) => {
     if (confirm && removingCarId.length) {
       remove(removingCarId)
       setRemovingCarId('')
@@ -57,23 +62,23 @@ function CarTable() {
 
   const [ buscaBrand, setBuscaBrand ] = useState('')
 
-  const handleBusca = (e) => {
+  const handleBusca = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBusca(e.target.value)
   }
 
-  const handleBuscaBrand = (e) => {
+  const handleBuscaBrand = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setBuscaBrand(e.target.value)
   }
 
-  if (carStatus, brandStatus === "loading") {
+  if (carStatus && brandStatus === "loading") {
     return <div>Loading...</div>
   }
 
-  const filteredCar = cars.filter((car) => {
+  const filteredCar = cars.filter((car: Cars) => {
     return car.plate.toUpperCase().includes(busca.toUpperCase()) && car.brand.toUpperCase().includes(buscaBrand.toUpperCase())
   })
 
-  if (carStatus, brandStatus === "error") {
+  if (carStatus && brandStatus === "error") {
     return <div>Error</div>
   }
 
@@ -93,7 +98,7 @@ return(
     <label htmlFor="pesquisaMarca">Filtrar por marca</label>
     <select className="border-2 rounded-md" id="pesquisaMarca" onChange={handleBuscaBrand}>
       <option value=''>Selecione uma marca</option>
-      {carBrand.map((car) => (
+      {carBrand.map((car: Brands) => (
         <option>{car.name}</option>
       ))}
     </select>
@@ -109,7 +114,7 @@ return(
         <td className="border-r-2 border-black bg-black text-white w-56">Ações</td>
       </tr>
     </thead>
-    {filteredCar.map((car) => (
+    {filteredCar.map((car: Cars) => (
     <tbody>
       <tr>
         <td className="border-r-2 border-black">{car.plate}</td>

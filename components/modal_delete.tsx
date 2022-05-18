@@ -1,4 +1,10 @@
-const Modal = ( { modalConfirm } ) => {
+import React from "react"
+
+interface ModalProps {
+  modalConfirm: (confirm: boolean) => void
+}
+
+const Modal:React.FC<ModalProps> = ( { modalConfirm } ) => {
   return(
     <div className="w-screen h-screen fixed top-0 left-0 z-2000 flex">
       <div className="border-2 rounded-md border-black w-96 m-auto">

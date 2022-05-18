@@ -1,13 +1,17 @@
 import Container from "./container";
 import { useQuery, useMutation } from "react-query";
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import ReactInputMask from "react-input-mask";
+import Cars from "../types/cars";
 
+interface EditFormProps {
+  id: string | string[]
+}
 
-export function EditarCarro (id) {
+const EditarCarro:React.FC<EditFormProps> = (id) => {
 
-  const [car, setCar] = useState()
+  const [car, setCar] = useState<Cars>()
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
@@ -21,7 +25,7 @@ export function EditarCarro (id) {
     return response.json()
   }
 
-  const editCar = async (car) => {
+  const editCar = async (car: Cars) => {
     const response = await fetch(`http://localhost:5000/car/${id.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -67,7 +71,7 @@ export function EditarCarro (id) {
     }
   }, [success, error])
 
-  function handleOnChange (e) {
+  function handleOnChange (e:React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) {
     setCar({
       ...car,
       [e.target.name]: e.target.value
@@ -87,7 +91,7 @@ export function EditarCarro (id) {
   }
 
   return(
-    <Container key={id}>
+    <Container>
       {success && <div className="self-center bg-green-500 py-4 px-8 text-white font-semibold rounded">Carro editado com sucesso!</div>}
       {error.length  > 0 && <div className="self-center bg-red-500 py-4 px-8 text-white font-semibold rounded">{error}</div>}
       {data && (<>
@@ -112,3 +116,5 @@ export function EditarCarro (id) {
     </Container>
   )
 }
+
+export default EditarCarro

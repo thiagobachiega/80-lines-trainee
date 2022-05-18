@@ -1,6 +1,11 @@
+import React, { ReactNode } from "react"
 import Navbar from "./navbar"
 
-const Container = ({children}) => {
+interface ContainerProps {
+  children: ReactNode
+}
+
+const Container:React.FC<ContainerProps> = ({children}) => {
   return(
     <>
       <Navbar/>
